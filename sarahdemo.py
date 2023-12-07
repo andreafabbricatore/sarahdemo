@@ -9,14 +9,11 @@ def generate_random_string(length):
     random_string = ''.join(random.choice(characters) for i in range(length))
     return random_string
 
-# Example: Generate a random string of length 10
-user = generate_random_string(10)
-
 def get_response(question):
     response = requests.post("https://europe-west8-sarah-404819.cloudfunctions.net/saraheu", data=json.dumps({
                 "latestmessage":question,
                 "splenderai_id":"gNB2aKBzX1WX3CH2lX3B",
-                "sender_name": user,
+                "sender_name": st.session_state.uid,
                 "sender_medium":"whatsapp"
     }), headers={'Content-Type': 'application/json'})
     return response.json()['output']
@@ -29,6 +26,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "history" not in st.session_state:
     st.session_state.history = []
+if "uid" not in st.session_state:
+    st.session_state.uid = generate_random_string(10)
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
