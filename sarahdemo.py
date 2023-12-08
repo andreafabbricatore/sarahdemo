@@ -10,9 +10,10 @@ def generate_random_string(length):
     return random_string
 
 def get_response(question):
+    print(st.session_state.uid)
     response = requests.post("https://europe-west8-sarah-404819.cloudfunctions.net/saraheu", data=json.dumps({
                 "latestmessage":question,
-                "splenderai_id":"gNB2aKBzX1WX3CH2lX3B",
+                "splenderai_id":"9BpnJgXWA2bWJBw1SMLU",
                 "sender_name": st.session_state.uid,
                 "sender_medium":"whatsapp"
     }), headers={'Content-Type': 'application/json'})
