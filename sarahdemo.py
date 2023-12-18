@@ -15,8 +15,12 @@ def get_response(question):
                 "latestmessage":question,
                 "splenderai_id":"9BpnJgXWA2bWJBw1SMLU",
                 "sender_name": st.session_state.uid,
-                "sender_medium":"whatsapp"
+                "sender_medium":"whatsapp",
+                "sarah_name": "Sarah",
+                "sarah_role": "Sales Agent",
+                "allow_inbound": "True"
     }), headers={'Content-Type': 'application/json'})
+    print(response.json()['output'])
     return response.json()['output']
 
 
@@ -48,12 +52,13 @@ if prompt := st.chat_input("..."):
         message_placeholder = st.empty()
         full_response = ""
         assistant_response = get_response(prompt)
-        st.session_state.history.append(prompt)
-        # Simulate stream of response with milliseconds delay
-        for chunk in assistant_response.split():
-            full_response += chunk + " "
-            # Add a blinking cursor to simulate typing
-            message_placeholder.markdown(full_response + "▌")
-        message_placeholder.markdown(full_response)
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": full_response})
+        if (assistant_response != "IGNORE_MESSAGE"):
+            st.session_state.history.append(prompt)
+            # Simulate stream of response with milliseconds delay
+            for chunk in assistant_response.split():
+                full_response += chunk + " "
+                # Add a blinking cursor to simulate typing
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
